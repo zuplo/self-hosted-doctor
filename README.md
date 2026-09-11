@@ -1,6 +1,6 @@
-# Zuplo Doctor
+# Zuplo Self Hosted Doctor
 
-`zuplo-doctor` checks a self-hosted Zuplo installation from a machine that can
+`zuplo-self-hosted-doctor` checks a self-hosted Zuplo installation from a machine that can
 reach its Kubernetes API and installation endpoints. It uses your kubeconfig and
 does not require kubectl, Helm, OpenSSL, Node.js, or Go to be installed. If your
 kubeconfig uses an external authentication helper, that helper must be installed
@@ -9,7 +9,7 @@ and you must be signed in.
 ## Download
 
 Download the `.tgz` for your machine from the
-[releases page](https://github.com/zuplo/zuplo-doctor/releases). Choose the
+[releases page](https://github.com/zuplo/zuplo-self-hosted-doctor/releases). Choose the
 architecture of the machine running Doctor, not the Kubernetes nodes.
 
 | Machine                   | Filename suffix     |
@@ -21,7 +21,7 @@ architecture of the machine running Doctor, not the Kubernetes nodes.
 | Windows, Intel/AMD 64-bit | `windows_amd64.tgz` |
 | Windows, ARM 64-bit       | `windows_arm64.tgz` |
 
-Choose a `zuplo-doctor_...tgz` asset. GitHub's automatic source-code archives do
+Choose a `zuplo-self-hosted-doctor_...tgz` asset. GitHub's automatic source-code archives do
 not contain the executable. Replace `1.2.3` in the examples with your downloaded
 version.
 
@@ -32,14 +32,14 @@ your archive's SHA256 hash using the command for your operating system:
 
 ```sh
 # Linux
-sha256sum zuplo-doctor_1.2.3_linux_amd64.tgz
+sha256sum zuplo-self-hosted-doctor_1.2.3_linux_amd64.tgz
 # macOS
-shasum -a 256 zuplo-doctor_1.2.3_darwin_arm64.tgz
+shasum -a 256 zuplo-self-hosted-doctor_1.2.3_darwin_arm64.tgz
 ```
 
 ```powershell
 # Windows (PowerShell)
-Get-FileHash .\zuplo-doctor_1.2.3_windows_amd64.tgz -Algorithm SHA256
+Get-FileHash .\zuplo-self-hosted-doctor_1.2.3_windows_amd64.tgz -Algorithm SHA256
 ```
 
 Substitute your downloaded filename. The hash must match its entry in
@@ -54,27 +54,27 @@ Use `tar` to extract the archive for your machine, then run the binary directly:
 
 ```sh
 # Linux Intel/AMD example; substitute your downloaded filename.
-tar -xzf zuplo-doctor_1.2.3_linux_amd64.tgz
-./zuplo-doctor version
-./zuplo-doctor verify
+tar -xzf zuplo-self-hosted-doctor_1.2.3_linux_amd64.tgz
+./zuplo-self-hosted-doctor version
+./zuplo-self-hosted-doctor verify
 ```
 
 If the executable bit was lost while copying the file, restore it with
-`chmod +x ./zuplo-doctor`. Optionally move the binary to a directory already on
-your PATH to run `zuplo-doctor` without the `./` prefix.
+`chmod +x ./zuplo-self-hosted-doctor`. Optionally move the binary to a directory already on
+your PATH to run `zuplo-self-hosted-doctor` without the `./` prefix.
 
 ### Windows (PowerShell)
 
 Use the built-in `tar` command on Windows 10/11 to extract the archive:
 
 ```powershell
-tar -xzf .\zuplo-doctor_1.2.3_windows_amd64.tgz
-.\zuplo-doctor.exe version
-.\zuplo-doctor.exe verify
+tar -xzf .\zuplo-self-hosted-doctor_1.2.3_windows_amd64.tgz
+.\zuplo-self-hosted-doctor.exe version
+.\zuplo-self-hosted-doctor.exe verify
 ```
 
 If `tar` is unavailable, use your organization's approved archive utility to
-extract both the gzip and tar layers. Run the resulting `zuplo-doctor.exe`, not
+extract both the gzip and tar layers. Run the resulting `zuplo-self-hosted-doctor.exe`, not
 the archive. Optionally add the directory containing it to your user PATH.
 
 These downloads are not publisher-signed or notarized. If macOS, Windows, or
@@ -86,10 +86,10 @@ using your organization's normal software approval process.
 Doctor uses the current kubeconfig context. To select a different cluster:
 
 ```sh
-./zuplo-doctor verify --kubeconfig /path/to/kubeconfig --context my-cluster
+./zuplo-self-hosted-doctor verify --kubeconfig /path/to/kubeconfig --context my-cluster
 ```
 
-On Windows, use `.\zuplo-doctor.exe` and your Windows kubeconfig path instead.
+On Windows, use `.\zuplo-self-hosted-doctor.exe` and your Windows kubeconfig path instead.
 Connect to any VPN required to reach the cluster and installation hostnames.
 Your Kubernetes credentials need permission to read the installation resources,
 including Helm release Secrets and Zuplo Configuration resources. `verify` reads
@@ -114,8 +114,8 @@ code 3; they do not check prerequisites or deploy a sample project.
 
 ## Available verification checks
 
-Run the complete suite with `./zuplo-doctor verify`. To run a particular check,
-use `./zuplo-doctor verify --only CHECK_ID`, replacing `CHECK_ID` with an ID
+Run the complete suite with `./zuplo-self-hosted-doctor verify`. To run a particular check,
+use `./zuplo-self-hosted-doctor verify --only CHECK_ID`, replacing `CHECK_ID` with an ID
 below. Doctor also runs that check's dependencies automatically.
 
 | Check ID                | What it checks                                                                                                                                                                                                                                                                                  |
@@ -137,17 +137,17 @@ below. Doctor also runs that check's dependencies automatically.
 
 ```sh
 # Check deployment health and its Configuration dependency.
-./zuplo-doctor verify --only deployments-ready
+./zuplo-self-hosted-doctor verify --only deployments-ready
 
 # Select several checks with comma-separated IDs or repeated flags.
-./zuplo-doctor verify --only helm-release,configuration-matches,builder-config
-./zuplo-doctor verify --only management-ingress --only dns-records
+./zuplo-self-hosted-doctor verify --only helm-release,configuration-matches,builder-config
+./zuplo-self-hosted-doctor verify --only management-ingress --only dns-records
 
 # Run the suite without the management API authentication check.
-./zuplo-doctor verify --skip management-api-auth
+./zuplo-self-hosted-doctor verify --skip management-api-auth
 
 # Show the exact dependency list for this version.
-./zuplo-doctor verify --list
+./zuplo-self-hosted-doctor verify --list
 ```
 
 `--only` includes dependencies recursively. `--skip` accepts the same
@@ -162,7 +162,7 @@ Even a filtered verification run requires Kubernetes API access.
 ### Compare a local values file
 
 ```sh
-./zuplo-doctor verify --only configuration-matches --values /path/to/values.yaml
+./zuplo-self-hosted-doctor verify --only configuration-matches --values /path/to/values.yaml
 ```
 
 The file is an additional comparison against the live Configuration; it does not
@@ -174,8 +174,8 @@ not every Helm value or Secret value.
 ### Check private certificates and the expected issuer
 
 ```sh
-./zuplo-doctor verify --only management-api-tls --ca-file /path/to/company-ca.pem
-./zuplo-doctor verify --only management-api-tls --expect-issuer '^Company Issuing CA$'
+./zuplo-self-hosted-doctor verify --only management-api-tls --ca-file /path/to/company-ca.pem
+./zuplo-self-hosted-doctor verify --only management-api-tls --expect-issuer '^Company Issuing CA$'
 ```
 
 `--ca-file` adds PEM CA certificates to system trust for TLS and HTTPS probes,
@@ -191,13 +191,13 @@ check authenticated access:
 
 ```sh
 # After supplying ZUPLO_API_KEY through your shell or secret manager:
-./zuplo-doctor verify --only management-api-auth
+./zuplo-self-hosted-doctor verify --only management-api-auth
 
 # Read the key from a different environment variable instead:
-./zuplo-doctor verify --only management-api-auth --api-key-env MY_ZUPLO_API_KEY
+./zuplo-self-hosted-doctor verify --only management-api-auth --api-key-env MY_ZUPLO_API_KEY
 ```
 
-The same commands work in PowerShell with `.\zuplo-doctor.exe`; the key must be
+The same commands work in PowerShell with `.\zuplo-self-hosted-doctor.exe`; the key must be
 available as `$env:ZUPLO_API_KEY` (or the variable selected by `--api-key-env`).
 Pass the environment variable's name to `--api-key-env`, not the key itself.
 Doctor verifies TLS again before sending the key as a Bearer token. An unset or
@@ -236,16 +236,16 @@ still performs network requests, which have their own timeouts.
 
 ```sh
 # Take a single snapshot without polling.
-./zuplo-doctor verify --no-wait
+./zuplo-self-hosted-doctor verify --no-wait
 
 # Allow each polling phase up to 30 seconds.
-./zuplo-doctor verify --timeout 30s
+./zuplo-self-hosted-doctor verify --timeout 30s
 
 # Save a machine-readable report and treat warnings as unsuccessful.
-./zuplo-doctor verify --output json --strict > doctor-report.json
+./zuplo-self-hosted-doctor verify --output json --strict > doctor-report.json
 
 # Include probe diagnostics, with JSON and diagnostics in separate files.
-./zuplo-doctor verify --output json --verbose > doctor-report.json 2> doctor-debug.log
+./zuplo-self-hosted-doctor verify --output json --verbose > doctor-report.json 2> doctor-debug.log
 ```
 
 ## Results and exit codes
