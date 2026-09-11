@@ -1,4 +1,4 @@
-# Zuplo Self Hosted Doctor
+# Zuplo Doctor
 
 `zuplo-self-hosted-doctor` checks a self-hosted Zuplo installation from a machine that can
 reach its Kubernetes API and installation endpoints. It uses your kubeconfig and
@@ -9,7 +9,7 @@ and you must be signed in.
 ## Download
 
 Download the `.tgz` for your machine from the
-[releases page](https://github.com/zuplo/zuplo-self-hosted-doctor/releases). Choose the
+[releases page](https://github.com/zuplo/self-hosted-doctor/releases). Choose the
 architecture of the machine running Doctor, not the Kubernetes nodes.
 
 | Machine                   | Filename suffix     |
